@@ -72,3 +72,23 @@ export const ChangeEmailValidator = [
     .isEmail()
     .withMessage("Email must be a valid email address"),
 ];
+
+export const changePasswordValidation = [
+  body("currentPassword")
+    .exists({ checkFalsy: true })
+    .withMessage("Current password is required")
+    .isLength({ min: 8 })
+    .withMessage("Current password must be at least 8 characters long"),
+
+  body("password")
+    .exists({ checkFalsy: true })
+    .withMessage("Password is required")
+    .isLength({ min: 8 })
+    .withMessage("Password must be at least 8 characters long"),
+
+  body("confirm")
+    .exists({ checkFalsy: true })
+    .withMessage("Confirm password is required")
+    .custom((value, { req }) => value === req.body.password)
+    .withMessage("Confirm password must match password"),
+];
