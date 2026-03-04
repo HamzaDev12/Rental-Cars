@@ -219,6 +219,14 @@ export const login = async (req: Request, res: Response) => {
       return;
     }
 
+    if (user.isVerified === false) {
+      shortRes(
+        res,
+        400,
+        "Your account is not verified. Please verify your email to continue.",
+      );
+      return;
+    }
     const token = generateToken(user.id);
     const { password: _, ...rest } = user;
 

@@ -11,7 +11,12 @@ import {
 } from "../controllers/booking.controller.js";
 const route = Router();
 
-route.post("/create", authentication, authorized([Role.ADMIN]), createBooking);
+route.post(
+  "/create",
+  authentication,
+  authorized([Role.CUSTOMER]),
+  createBooking,
+);
 
 route.patch(
   "/update/:id",

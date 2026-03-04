@@ -3,18 +3,19 @@ import type { AuthRequest } from "../types/auth.types.js";
 import { catchError, shortRes } from "../constants/messages.js";
 import type { ICreateBooking } from "../types/booking.types.js";
 import { prisma } from "../lib/prisma.js";
+import { sentNotification } from "../services/notification.service.js";
 
 export const createBooking = async (req: AuthRequest, res: Response) => {
   try {
-    const { carId, startDate, endDate, userId } = req.body;
+    const { carId, startDate, endDate } = req.body;
 
-    if (!carId || !startDate || !endDate || !userId) {
+    if (!carId || !startDate || !endDate) {
       return shortRes(res, 400, "All fields are required");
     }
 
     const user = await prisma.user.findUnique({
       where: {
-        id: userId,
+        id: req.userId!,
       },
     });
 
@@ -84,10 +85,52 @@ export const createBooking = async (req: AuthRequest, res: Response) => {
       return createdBooking;
     });
 
+    sentNotification(
+      user.email,
+      `Booking Received – Awaiting Confirmation </br>
+
+Hello ${user.name},<br/><br/>
+
+We have received your booking request for the car "${car.name}". Your booking is currently <b>pending confirmation</b>. <br/>
+
+📅 Start Date: ${start.toDateString()}<br/>
+📅 End Date: ${end.toDateString()}<br/>
+💰 Total Price: $${totalPrice}<br/>
+
+We will notify you as soon as your booking is confirmed. Thank you for your patience.<br/>
+
+Best regards,<br/>
+Hargeisa Drive`,
+    );
     return shortRes(res, 201, "Booking created successfully", booking);
   } catch (error) {
     catchError(error, res);
   }
+};
+
+const getBookingStatusMessage = (
+  userName: string,
+  carName: string,
+  status: string,
+) => {
+  if (status === "CONFIRMED") {
+    return `
+      Hello ${userName},<br><br>
+      Good news! Your booking for the car "${carName}" has been <b>approved</b>.<br>
+      You can pick up the car as per your scheduled dates.<br><br>
+      Best regards,<br>
+      Hargeisa Drive
+    `;
+  } else if (status === "CANCELED") {
+    return `
+      Hello ${userName},<br><br>
+      We’re sorry, but your booking for the car "${carName}" has been <b>rejected</b>.<br>
+      Please try booking another car or contact support for more details.<br><br>
+      Best regards,<br>
+      Hargeisa Drive
+    `;
+  }
+  return "";
 };
 
 export const updatedBooking = async (req: AuthRequest, res: Response) => {
@@ -106,6 +149,10 @@ export const updatedBooking = async (req: AuthRequest, res: Response) => {
     const booked = await prisma.booking.findUnique({
       where: {
         id: Number(id),
+      },
+      include: {
+        user: true,
+        car: true,
       },
     });
 
@@ -129,6 +176,16 @@ export const updatedBooking = async (req: AuthRequest, res: Response) => {
 
       return updatedBooking;
     });
+
+    if (status === "CONFIRMED" || status === "CANCELED") {
+      const message = getBookingStatusMessage(
+        booked.user.name,
+        booked.car.name,
+        status,
+      );
+      await sentNotification(booked.user.email, message);
+    }
+
     shortRes(res, 200, "Updated booking seccussfully", updated);
   } catch (error) {
     catchError(error, res);
@@ -154,8 +211,16 @@ export const deletedBooking = async (req: AuthRequest, res: Response) => {
       return;
     }
 
+    if (booked.status === "PENDING" || booked.status === "CONFIRMED") {
+      shortRes(
+        res,
+        400,
+        "Cannot delete booking that is pending or confirmed. Please cancel it first.",
+      );
+      return;
+    }
     await prisma.$transaction(async (tx) => {
-      if (booked.status === "CONFIRMED" || booked.status === "PENDING") {
+      if (booked.status === "CANCELED" || booked.status === "COMPLETED") {
         await tx.car.update({
           where: { id: booked.carId },
           data: { isAvailable: true },
