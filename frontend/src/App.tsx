@@ -1,5 +1,14 @@
+import LoginForm from "./components/login";
+
+// import RegisterForm from "./components/register";
+
 function App() {
-  return <></>;
+  return (
+    <>
+      <LoginForm />
+      {/* <RegisterForm /> */}
+    </>
+  );
 }
 
 export default App;

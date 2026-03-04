@@ -1,0 +1,82 @@
+import { useState } from "react";
+import { BiLock, BiUser } from "react-icons/bi";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { LuLogIn } from "react-icons/lu";
+
+const LoginForm = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  return (
+    <div className="min-h-screen min-w-full flex justify-center items-center flex-col bg-gray-800 text-white">
+      <h1 className="text-3xl font-extrabold tracking-wide text-blue-500 uppercase ">
+        Hargeisa Drive
+      </h1>
+      <p className="mt-3 text-lg md:text-xl font-medium text-gray-300 tracking-wide">
+        Welcome back — drive your dream car today.
+      </p>
+      <div className="bg-gray-950 border rounded-lg shadow-[rgba(0,0,0,0.02)_0px_1px_3px_0px,rgba(27,31,35,0.15)_0px_0px_0px_1px] p-8 mt-5 w-[450px]">
+        <form action="">
+          <label htmlFor="" className="text-md font-bold">
+            Email <span className="text-red-400">*</span>
+          </label>{" "}
+          <div className="relative pt-4">
+            <BiUser className="text-gray-300 font-bold text-2xl  absolute top-6 left-2" />
+            <input
+              type="email"
+              placeholder="Enter Your Email"
+              className="bg-gray-800 placeholder:text-gray-400 w-[390px] text-white border border-gray-300 rounded-lg px-9 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <label htmlFor="" className="text-md font-bold mt-4">
+            Passowrd <span className="text-red-400">*</span>
+          </label>{" "}
+          <div className="relative pt-4">
+            <BiLock className="text-gray-300 font-bold text-2xl  absolute top-6 left-2" />
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter Your password"
+              className="bg-gray-800 placeholder:text-gray-400 w-[390px] text-white border border-gray-300 rounded-lg px-9 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <span
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute bottom-2 left-[348px] cursor-pointer"
+            >
+              {showPassword ? (
+                <AiFillEyeInvisible className="text-gery-300 font-bold text-2xl" />
+              ) : (
+                <AiFillEye className="text-gery-300 font-bold text-2xl" />
+              )}
+            </span>
+          </div>
+          <div className="flex justify-between pt-3 items-center">
+            <div className="">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 accent-blue-500 rounded focus:ring-2 focus:ring-blue-400"
+                />
+                <span className="text-sm font-medium text-gray-300">
+                  Remember Me
+                </span>
+              </label>
+            </div>
+            <span className="text-sm underline text-white cursor-pointer tracking-wide">
+              forget password
+            </span>
+          </div>
+          <button className="btn btn-info text-2xl w-[390px] font-black text-blue-700 uppercase tracking-wider mt-4">
+            <LuLogIn /> Login
+          </button>
+          <p>
+            Don't have an account?{" "}
+            <a href="/register" className="text-blue-600 underline">
+              Register here
+            </a>
+          </p>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default LoginForm;
