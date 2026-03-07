@@ -3,6 +3,7 @@ import { catchError, shortRes } from "../constants/messages.js";
 import { prisma } from "../lib/prisma.js";
 import { sentNotification } from "../services/notification.service.js";
 import type { AuthRequest } from "../types/auth.types.js";
+import { sendMessageClient } from "../services/email.service.js";
 
 export const sendMessage = async (req: AuthRequest, res: Response) => {
   try {
@@ -117,6 +118,46 @@ export const deleteMessage = async (req: AuthRequest, res: Response) => {
     });
 
     shortRes(res, 200, "Deleted message succssfully");
+  } catch (error) {
+    catchError(error, res);
+  }
+};
+
+export const fromClientMessage = async (req: AuthRequest, res: Response) => {
+  try {
+    const { name, email, message, subject } = req.body;
+
+    if (!name || !email || !subject || !message) {
+      return shortRes(res, 400, "All fields are required.");
+    }
+
+    const userId = req.userId;
+    if (!userId) {
+      return shortRes(res, 401, "Please log in first.");
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      return shortRes(res, 404, "User account not found.");
+    }
+
+    if (user.email !== email) {
+      return shortRes(res, 400, "Please enter the email you registered with.");
+    }
+
+    await prisma.notification.create({
+      data: {
+        message,
+        userId,
+      },
+    });
+
+    await sendMessageClient(user.email, subject, message);
+
+    shortRes(res, 200, "Your message has been sent successfully.");
   } catch (error) {
     catchError(error, res);
   }

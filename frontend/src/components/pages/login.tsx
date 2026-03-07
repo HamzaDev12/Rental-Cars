@@ -2,20 +2,29 @@ import { useState } from "react";
 import { BiLock, BiUser } from "react-icons/bi";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { LuLogIn } from "react-icons/lu";
+import { Link } from "react-router-dom";
+import logo from "./../../assets/Logo.png";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="min-h-screen min-w-full flex justify-center items-center flex-col bg-gray-800 text-white">
-      <h1 className="text-3xl font-extrabold tracking-wide text-blue-500 uppercase ">
-        Hargeisa Drive
-      </h1>
-      <p className="mt-3 text-lg md:text-xl font-medium text-gray-300 tracking-wide">
-        Welcome back — drive your dream car today.
-      </p>
       <div className="bg-gray-950 border rounded-lg shadow-[rgba(0,0,0,0.02)_0px_1px_3px_0px,rgba(27,31,35,0.15)_0px_0px_0px_1px] p-8 mt-5 w-[450px]">
-        <form action="">
+        <div className="flex items-center gap-x-2">
+          <div className="w-20 bg-gray-700 border border-gray-300 rounded-lg">
+            <img src={logo} alt="" className="w-full" />
+          </div>
+          <div className="">
+            <h1 className="text-2xl font-extrabold tracking-wide text-blue-500 uppercase ">
+              Hargeisa Drive
+            </h1>
+            <p className=" text-sm md:text-xl text-gray-300 tracking-wide">
+              Welcome back — drive your dream car today.
+            </p>
+          </div>
+        </div>
+        <form action="" className="mt-4">
           <label htmlFor="" className="text-md font-bold">
             Email <span className="text-red-400">*</span>
           </label>{" "}
@@ -69,9 +78,9 @@ const LoginForm = () => {
           </button>
           <p>
             Don't have an account?{" "}
-            <a href="/register" className="text-blue-600 underline">
+            <Link to="/register" className="text-blue-600 underline">
               Register here
-            </a>
+            </Link>
           </p>
         </form>
       </div>

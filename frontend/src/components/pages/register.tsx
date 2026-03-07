@@ -3,20 +3,29 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { BiLock, BiPhone, BiRegistered, BiUserCircle } from "react-icons/bi";
 import { ImImage } from "react-icons/im";
 import { MdCarRental, MdEmail } from "react-icons/md";
+import { Link } from "react-router-dom";
+import logo from "./../../assets/Logo.png";
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showCofirm, setShowCofirm] = useState(false);
   return (
-    <div className="min-h-screen min-w-full flex justify-center items-center flex-col text-white bg-gray-700">
-      <h1 className="tracking-wider uppercase text-3xl font-extrabold text-blue-500">
-        Hargeisa Drive
-      </h1>
-      <p className="mt-3 text-lg md:text-xl font-medium text-gray-300 tracking-wide">
-        Join us — your next car is waiting.
-      </p>
+    <div className="min-h-screen min-w-full flex justify-center items-center flex-col text-white bg-gray-800">
       <div className="bg-gray-950 w-[450px] mt-5 p-8 border border-gray-50 rounded-lg ">
-        <form action="">
+        <div className="flex items-center gap-x-2">
+          <div className="w-20 bg-gray-700 border border-gray-300 rounded-lg">
+            <img src={logo} alt="" className="w-full" />
+          </div>
+          <div className="">
+            <h1 className="text-2xl font-extrabold tracking-wide text-blue-500 uppercase ">
+              Hargeisa Drive
+            </h1>
+            <p className=" text-sm md:text-xl text-gray-300 tracking-wide">
+              Join us — your next car is waiting.
+            </p>
+          </div>
+        </div>
+        <form action="" className="mt-4">
           <div className="flex gap-x-1.5">
             <div className="">
               <label htmlFor="" className="text-md font-bold">
@@ -135,9 +144,9 @@ const RegisterForm = () => {
           </button>
           <p>
             Already have an account?{" "}
-            <a href="/login" className="text-blue-600 underline">
+            <Link to="/" className="text-blue-600 underline">
               Sign in here
-            </a>
+            </Link>
           </p>
         </form>
       </div>

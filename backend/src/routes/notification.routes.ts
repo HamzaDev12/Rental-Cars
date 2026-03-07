@@ -4,6 +4,7 @@ import { authorized } from "../middlewares/authorized.meddleware.js";
 import { Role } from "../generated/prisma/enums.js";
 import {
   deleteMessage,
+  fromClientMessage,
   getMessage,
   sendMessage,
 } from "../controllers/notification.controller.js";
@@ -24,5 +25,7 @@ route.delete(
   authorized([Role.ADMIN]),
   deleteMessage,
 );
+
+route.post("/fromClient", authentication, fromClientMessage);
 
 export default route;

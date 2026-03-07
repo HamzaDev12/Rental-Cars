@@ -54,15 +54,21 @@ model OTP {
 }
 
 model Car {
-  id          Int      @id @default(autoincrement())
-  name        String
-  model       String
-  year        Int
-  pricePerDay Float
-  imageUrl    String?
-  isAvailable Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  name         String
+  model        String
+  year         Int
+  pricePerDay  Float
+  imageUrl     String?
+  mileage      Int?
+  seats        Int?
+  transmission String?
+  location     String?
+  fuelType     String?
+  description  String?
+  isAvailable  Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   bookings Booking[]
 }

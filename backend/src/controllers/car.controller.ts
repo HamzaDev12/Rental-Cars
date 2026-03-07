@@ -9,10 +9,21 @@ export const createCar = [
   uploads.single("image"),
   async (req: AuthRequest, res: Response) => {
     try {
-      const { name, model, year, pricePerDay }: ICreateCar = req.body;
+      const {
+        name,
+        model,
+        year,
+        pricePerDay,
+        seats,
+        mileage,
+        transmission,
+        location,
+        description,
+        fuelType,
+      }: ICreateCar = req.body;
       const image = req.file ? req.file.filename : null;
 
-      if (!name || !model || year == null || pricePerDay == null) {
+      if (!name || !model || year == null || pricePerDay == null || !seats) {
         return shortRes(res, 400, "please fill all inputs");
       }
 
@@ -31,6 +42,12 @@ export const createCar = [
           year: Number(year),
           pricePerDay: Number(pricePerDay),
           imageUrl: image,
+          seats,
+          mileage,
+          transmission,
+          location,
+          description,
+          fuelType,
         },
       });
 
@@ -59,8 +76,19 @@ export const updateCar = [
         return shortRes(res, 404, "car not found");
       }
 
-      const { name, model, year, pricePerDay, isAvailable }: IUpdateCar =
-        req.body;
+      const {
+        name,
+        model,
+        year,
+        pricePerDay,
+        isAvailable,
+        seats,
+        mileage,
+        transmission,
+        location,
+        description,
+        fuelType,
+      }: IUpdateCar = req.body;
 
       const image = req.file ? req.file.filename : null;
 
@@ -81,6 +109,12 @@ export const updateCar = [
           pricePerDay: Number(pricePerDay) ?? car.pricePerDay,
           imageUrl: image ?? car.imageUrl,
           isAvailable: isAvailable ?? car.isAvailable,
+          seats: seats ?? car.seats,
+          mileage: Number(mileage) ?? car.mileage,
+          transmission: transmission ?? car.transmission,
+          location: location ?? car.location,
+          fuelType: fuelType ?? car.fuelType,
+          description: description ?? car.description,
         },
       });
 
@@ -174,8 +208,18 @@ export const getAllCars = async (req: AuthRequest, res: Response) => {
 
     const totalPages = Math.ceil(total / limitNumber);
 
-    return shortRes(res, 200, "cars fetched successfully", {
-      data: cars,
+    // return shortRes(res, 200, "cars fetched successfully", {
+    //   data: cars,
+    //   pagination: {
+    //     total,
+    //     page: pageNumber,
+    //     totalPages,
+    //     limit: limitNumber,
+    //   },
+    // });
+
+    res.status(200).json({
+      cars,
       pagination: {
         total,
         page: pageNumber,
