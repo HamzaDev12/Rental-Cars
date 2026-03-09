@@ -1,7 +1,21 @@
 import { LuLogIn } from "react-icons/lu";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import type { AppDispatch, RootState } from "../store/store";
+import { IoLogOutOutline } from "react-icons/io5";
+import { logout } from "../store/auth/loginUser";
+import toast from "react-hot-toast";
 
 const Header = () => {
+  const loginState = useSelector((state: RootState) => state.loginUser);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const toastId = "loading..";
+
+  const handleLogout = () => {
+    dispatch(logout());
+    toast.success("You logout successfully", { id: toastId });
+  };
   return (
     <div>
       <div className="navbar bg-base-100 shadow-sm">
@@ -57,15 +71,36 @@ const Header = () => {
             </li>
           </ul>
         </div>
-        <div className="navbar-end gap-x-2">
-          <Link to="/login" className="btn btn-soft btn-info">
-            <LuLogIn />
-            Login
-          </Link>
-          <Link to="/register" className="btn btn-soft btn-accent">
-            Signup
-          </Link>
-        </div>
+        {loginState?.data?.user ? (
+          loginState?.data?.user.role === "CUSTOMER" ? (
+            <div className="navbar-end gap-x-2">
+              <button onClick={handleLogout} className="btn btn-soft btn-info">
+                <IoLogOutOutline />
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="navbar-end gap-x-2">
+              <button onClick={handleLogout} className="btn btn-soft btn-info">
+                <IoLogOutOutline />
+                Logout
+              </button>
+              <Link to="/dashboard" className="btn btn-soft btn-accent">
+                MyDashboard
+              </Link>
+            </div>
+          )
+        ) : (
+          <div className="navbar-end gap-x-2">
+            <Link to="/login" className="btn btn-soft btn-info">
+              <LuLogIn />
+              Login
+            </Link>
+            <Link to="/register" className="btn btn-soft btn-accent">
+              Signup
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

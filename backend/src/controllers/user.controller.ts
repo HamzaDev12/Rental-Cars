@@ -230,8 +230,9 @@ export const login = async (req: Request, res: Response) => {
     const token = generateToken(user.id);
     const { password: _, ...rest } = user;
 
-    shortRes(res, 200, `Welcome, ${user.name.split(" ")[0]}`, {
-      data: rest,
+    res.status(200).json({
+      message: `Welcome, ${user.name.split(" ")[0]}`,
+      user: rest,
       token,
     });
   } catch (error) {
