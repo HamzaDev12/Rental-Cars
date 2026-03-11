@@ -1,16 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { baseURL, somError } from "../../constants/message";
+import type {
+  ICreateUserPayload,
+  ICreateUserResponse,
+} from "../../types/user.types";
 
 const initialState = {
-  data: {},
+  data: {} as ICreateuserResponse,
   loading: false,
   error: "",
 };
 
 export const createUserFn = createAsyncThunk(
   "user/create",
-  async (data: number, { rejectWithValue }) => {
+  async (data: ICreateUserPayload, { rejectWithValue }) => {
     try {
       const res = await axios.post(`${baseURL}/users/create`, data);
       return res.data;
@@ -27,4 +31,23 @@ export const createUser = createSlice({
   name: "createUser",
   initialState,
   reducers: {},
+  extraReducers(builder) {
+    builder.addCase(createUserFn.pending, (state) => {
+      state.data = {} as ICreateuserResponse;
+      state.error = "";
+      state.loading = true;
+    });
+
+    builder.addCase(createUserFn.fulfilled, (state, action) => {
+      state.data = action.payload;
+      state.error = "";
+      state.loading = false;
+    });
+
+    builder.addCase(createUserFn.rejected, (state, action) => {
+      state.data = {} as ICreateUserResponse;
+      state.error = String(action.payload);
+      state.loading = false;
+    });
+  },
 });

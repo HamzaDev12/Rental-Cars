@@ -5,6 +5,7 @@ import type { AppDispatch, RootState } from "../store/store";
 import { IoLogOutOutline } from "react-icons/io5";
 import { logout } from "../store/auth/loginUser";
 import toast from "react-hot-toast";
+import Profile from "./profile";
 
 const Header = () => {
   const loginState = useSelector((state: RootState) => state.loginUser);
@@ -74,10 +75,7 @@ const Header = () => {
         {loginState?.data?.user ? (
           loginState?.data?.user.role === "CUSTOMER" ? (
             <div className="navbar-end gap-x-2">
-              <button onClick={handleLogout} className="btn btn-soft btn-info">
-                <IoLogOutOutline />
-                Logout
-              </button>
+              <Profile />
             </div>
           ) : (
             <div className="navbar-end gap-x-2">

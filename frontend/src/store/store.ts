@@ -2,6 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { getCars } from "./cars/getAllCars";
 import { createNotification } from "./notification/sendMessage";
 import { loginUser } from "./auth/loginUser";
+import { whoami } from "./auth/whoami";
+import { createUser } from "./auth/createUser";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +15,8 @@ export const store = configureStore({
 
     // users
     loginUser: loginUser.reducer,
+    whoami: whoami.reducer,
+    createUser: createUser.reducer,
   },
   devTools: true,
 });

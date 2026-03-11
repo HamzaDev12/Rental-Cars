@@ -14,7 +14,51 @@ export interface User {
   name: string;
   email: string;
   phone: null;
-  image: null;
+  image: string;
+  role: string;
+  isVerified: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IGetWhoami {
+  message: string;
+  data: Data;
+}
+
+export interface Data {
+  id: number;
+  name: string;
+  email: string;
+  phone: null;
+  image?: string;
+  role: string;
+  isVerified: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ICreateUserPayload {
+  name: string;
+  email: string;
+  password: string;
+  confirm: string;
+  role: string;
+  phone: string;
+  image?: string;
+}
+
+export interface ICreateUserResponse {
+  message: string;
+  data: Data;
+}
+
+export interface Data {
+  id: number;
+  name: string;
+  email: string;
+  phone: null;
+  image?: string;
   role: string;
   isVerified: boolean;
   createdAt: Date;

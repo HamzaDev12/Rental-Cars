@@ -76,6 +76,11 @@ const LoginForm = () => {
           </div>
         </div>
         <form action="" className="mt-4" onSubmit={formik.handleSubmit}>
+          {loginSate.error && (
+            <p className="text-center bg-[#FEBBBD] w-[325px] m-auto p-1 text-black rounded-md flex justify-center items-center">
+              {loginSate.error && loginSate.error}
+            </p>
+          )}{" "}
           <label htmlFor="" className="text-md font-bold">
             Email <span className="text-red-400">*</span>
           </label>{" "}

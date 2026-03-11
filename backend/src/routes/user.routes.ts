@@ -15,6 +15,7 @@ import {
   requestChangeEmail,
   updatePassword,
   verifyOtp,
+  whoami,
 } from "../controllers/user.controller.js";
 import { authentication } from "../middlewares/auth.middleware.js";
 import { authorized } from "../middlewares/authorized.meddleware.js";
@@ -48,5 +49,7 @@ route.patch(
 route.post("/changeEmail", authentication, requestChangeEmail);
 
 route.patch("/verifyEmailChange", authentication, confirmChangeEmail);
+
+route.get("/whoami", authentication, whoami);
 
 export default route;

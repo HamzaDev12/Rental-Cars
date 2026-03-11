@@ -67,6 +67,10 @@ export const createUser = [
 
       const { password: _, ...userWithoutPassword } = created;
       shortRes(res, 201, "User created successfully", userWithoutPassword);
+      res.status(201).json({
+        message: "User created successfully",
+        user: userWithoutPassword,
+      });
     } catch (error) {
       catchError(error, res);
     }
@@ -438,3 +442,23 @@ export const updateUser = [
     }
   },
 ];
+
+export const whoami = async (req: AuthRequest, res: Response) => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        id: req.userId!,
+      },
+    });
+
+    if (!user) {
+      shortRes(res, 404, "User not found");
+      return;
+    }
+
+    const { password, ...rest } = user;
+    shortRes(res, 200, "user found", rest);
+  } catch (error) {
+    catchError(error, res);
+  }
+};
