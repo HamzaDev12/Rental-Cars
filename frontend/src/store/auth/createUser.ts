@@ -6,8 +6,12 @@ import type {
   ICreateUserResponse,
 } from "../../types/user.types";
 
+const data = localStorage.getItem("email")
+  ? JSON.parse(localStorage.getItem("email")!)
+  : {};
+
 const initialState = {
-  data: {} as ICreateuserResponse,
+  data: data || ({} as ICreateUserResponse),
   loading: false,
   error: "",
 };
@@ -33,7 +37,7 @@ export const createUser = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder.addCase(createUserFn.pending, (state) => {
-      state.data = {} as ICreateuserResponse;
+      state.data = {} as ICreateUserResponse;
       state.error = "";
       state.loading = true;
     });

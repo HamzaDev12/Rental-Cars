@@ -64,7 +64,7 @@ const RegisterForm = () => {
 
       confirm: yup
         .string()
-        .oneOf([yup.ref("password"), null], "Passwords must match")
+        .oneOf([yup.ref("password")], "Passwords must match")
         .required("Please confirm your password"),
 
       name: yup
@@ -91,19 +91,17 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (createState.error) {
-      toast.error(createState?.error, { id: toastId });
+      toast.error(createState.error, { id: toastId });
     }
 
-    if (createState.data.data) {
+    if (createState?.data?.data) {
       toast.success(createState?.data?.message, { id: toastId });
-    }
-  }, [createState]);
 
-  useEffect(() => {
-    if (createState.data.data) {
+      localStorage.setItem("email", createState?.data?.data?.email);
+
       navigate("/otp");
     }
-  }, [navigate, createState]);
+  }, [createState?.data, createState?.error, navigate]);
 
   if (createState?.loading) return <Spinner />;
 
@@ -194,7 +192,7 @@ const RegisterForm = () => {
 
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="Enter your phone"
+              placeholder="Enter your password"
               name="password"
               value={formik.values.password}
               onChange={formik.handleChange}
@@ -224,7 +222,7 @@ const RegisterForm = () => {
 
             <input
               type={showCofirm ? "text" : "password"}
-              placeholder="Enter your phone"
+              placeholder="Enter your conform password"
               name="confirm"
               value={formik.values.confirm}
               onChange={formik.handleChange}
@@ -256,7 +254,10 @@ const RegisterForm = () => {
               type="file"
               name="image"
               onChange={(event) => {
-                formik.setFieldValue("image", event.currentTarget.files[0]);
+                const file = event.currentTarget.files?.[0];
+                if (file) {
+                  formik.setFieldValue("image", file);
+                }
               }}
               onBlur={formik.handleBlur}
               className="bg-gray-800 w-[390px] mt-2 rounded-lg px-9 py-2  text-white placeholder:text-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -278,8 +279,8 @@ const RegisterForm = () => {
               className="bg-gray-800 w-[390px] mt-2 rounded-lg px-9 py-2  text-white placeholder:text-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option disabled={true}>Choose role</option>
-              <option value={createState?.data?.data?.role}>ADMIN</option>
-              <option value={createState?.data?.data?.role}>CUSTOMER</option>
+              <option value="ADMIN">ADMIN</option>
+              <option value="CUSTOMER">CUSTOMER</option>
             </select>
           </div>
           <p className="text-sm text-red-400">

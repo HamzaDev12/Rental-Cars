@@ -64,3 +64,16 @@ export interface Data {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IVerifyResponse {
+  message: string;
+}
+
+export interface IVerifyPayload {
+  code: string;
+  email: string;
+}
+
+export interface ISendOTPResponse {
+  message: string;
+}

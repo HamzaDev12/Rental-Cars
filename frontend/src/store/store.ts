@@ -4,6 +4,8 @@ import { createNotification } from "./notification/sendMessage";
 import { loginUser } from "./auth/loginUser";
 import { whoami } from "./auth/whoami";
 import { createUser } from "./auth/createUser";
+import { verificationCode } from "./auth/verification";
+import { sendOTPCode } from "./auth/re-sendOtp";
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +19,8 @@ export const store = configureStore({
     loginUser: loginUser.reducer,
     whoami: whoami.reducer,
     createUser: createUser.reducer,
+    verifyCode: verificationCode.reducer,
+    sendCode: sendOTPCode.reducer,
   },
   devTools: true,
 });

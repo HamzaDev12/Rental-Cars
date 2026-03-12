@@ -65,8 +65,17 @@ export const createUser = [
         },
       });
 
+      const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+      const expiresAt = new Date();
+      expiresAt.setMinutes(expiresAt.getMinutes() + 10);
+
+      await prisma.oTP.create({
+        data: { userId: created.id, code: otpCode, expiresAt },
+      });
+
+      await sendOtpEmail(created.email, otpCode);
+
       const { password: _, ...userWithoutPassword } = created;
-      shortRes(res, 201, "User created successfully", userWithoutPassword);
       res.status(201).json({
         message: "User created successfully",
         user: userWithoutPassword,
