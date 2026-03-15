@@ -6,11 +6,15 @@ import { whoami } from "./auth/whoami";
 import { createUser } from "./auth/createUser";
 import { verificationCode } from "./auth/verification";
 import { sendOTPCode } from "./auth/re-sendOtp";
+import { getMyBookings } from "./bookings/getMyBooking";
 
 export const store = configureStore({
   reducer: {
     // cars
     getAllCars: getCars.reducer,
+
+    // bookings
+    myBookings: getMyBookings.reducer,
 
     // notification
     sendMessage: createNotification.reducer,

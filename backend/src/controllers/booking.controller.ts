@@ -324,6 +324,7 @@ export const myBooking = async (req: AuthRequest, res: Response) => {
               name: true,
               model: true,
               year: true,
+              location: true,
             },
           },
         },
@@ -334,8 +335,9 @@ export const myBooking = async (req: AuthRequest, res: Response) => {
       }),
     ]);
 
-    return shortRes(res, 200, "Bookings fetched successfully", {
-      data: bookings,
+    res.status(200).json({
+      message: "Bookings fetched successfully",
+      bookings,
       pagination: {
         page: pageNumber,
         limit: limitNumber,

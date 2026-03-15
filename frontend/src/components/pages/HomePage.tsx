@@ -163,7 +163,7 @@ const HomePage = () => {
         journey
       </p>
 
-      <section className="pt-3 pb-16 w-full">
+      <section className="pt-3 pb-16 w-full max-w-7xl mx-auto px-4">
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {carState?.data?.cars?.slice(0, 3).map((car) => (
             <div
