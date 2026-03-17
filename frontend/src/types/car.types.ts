@@ -8,7 +8,7 @@ export interface Car {
   name: string;
   model: string;
   year: number;
-  pricePerDay: number | null;
+  pricePerDay: number;
   imageUrl: string;
   mileage: number;
   seats: number;
@@ -19,6 +19,7 @@ export interface Car {
   isAvailable: boolean;
   createdAt: Date;
   updatedAt: Date;
+  bookings: Bookings[];
 }
 
 export interface Pagination {
@@ -26,4 +27,10 @@ export interface Pagination {
   page: number;
   totalPages: number;
   limit: number;
+}
+
+export interface Bookings {
+  userId: number;
+  status: string;
+  totalPrice: number;
 }

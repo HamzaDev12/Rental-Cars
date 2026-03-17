@@ -1,15 +1,25 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import Sidebar from "./sideBar";
+import Header from "../layout/Header";
+import Sidebar from "../layout/Sidebar";
 
 const MainPage = () => {
-  return (
-    <div className=" relative min-h-screen bg-gray-800">
-      {/* Sidebar */}
-      <Sidebar />
+  const [isOpen, setIsOpen] = useState(false);
 
-      {/* Content area */}
-      <div className="flex-1 z-0 absolute top-5 left-72  mt-20">
-        <Outlet />
+  return (
+    <div className="bg-gray-800 min-h-screen text-white">
+      {/* Sidebar */}
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+
+      {/* Content */}
+      <div className="lg:ml-64 flex flex-col min-h-screen">
+        {/* Header */}
+        <Header onClose={() => setIsOpen(true)} />
+
+        {/* Page */}
+        <main className="flex-1 p-6">
+          <Outlet />
+        </main>
       </div>
     </div>
   );

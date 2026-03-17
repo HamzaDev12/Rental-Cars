@@ -4,6 +4,7 @@ import { useState } from "react";
 import { BsFuelPump, BsPeople } from "react-icons/bs";
 import { PiTrainSimpleLight } from "react-icons/pi";
 import { BiLocationPlus, BiSearch } from "react-icons/bi";
+import { Link } from "react-router-dom";
 
 const Cars = () => {
   const carState = useSelector((state: RootState) => state.getAllCars);
@@ -98,9 +99,12 @@ const Cars = () => {
               </div>
 
               <div className="pt-4 flex justify-between flex-wrap gap-2">
-                <button className="btn btn-outline btn-info px-10">
+                <Link
+                  to={`/carDetails/${car.id}`}
+                  className="btn btn-outline btn-info px-10"
+                >
                   View Detials
-                </button>
+                </Link>
 
                 <button className="btn btn-info px-14">Book Now</button>
               </div>

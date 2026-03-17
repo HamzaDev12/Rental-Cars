@@ -200,6 +200,15 @@ export const getAllCars = async (req: AuthRequest, res: Response) => {
         skip,
         take: limitNumber,
         orderBy: { createdAt: "desc" },
+        include: {
+          bookings: {
+            select: {
+              userId: true,
+              status: true,
+              totalPrice: true,
+            },
+          },
+        },
       }),
       prisma.car.count({
         where: whereCondition,

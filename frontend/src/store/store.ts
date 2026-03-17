@@ -7,6 +7,8 @@ import { createUser } from "./auth/createUser";
 import { verificationCode } from "./auth/verification";
 import { sendOTPCode } from "./auth/re-sendOtp";
 import { getMyBookings } from "./bookings/getMyBooking";
+import { createBooking } from "./bookings/createBooking";
+import { getAllBookings } from "./bookings/getAllBookings";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +17,8 @@ export const store = configureStore({
 
     // bookings
     myBookings: getMyBookings.reducer,
+    createBooking: createBooking.reducer,
+    getAllBooking: getAllBookings.reducer,
 
     // notification
     sendMessage: createNotification.reducer,

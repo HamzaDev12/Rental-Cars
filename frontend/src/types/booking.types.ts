@@ -30,3 +30,25 @@ export interface Pagination {
   total: number;
   totalPages: number;
 }
+
+export interface ICreateBooking {
+  carId: number | null;
+  startDate: Date | string;
+  endDate: Date | string;
+}
+
+export interface ICreateBookingResponse {
+  message: string;
+  data: Data;
+}
+
+export interface Data {
+  id: number;
+  userId: number;
+  carId: number;
+  startDate: Date;
+  endDate: Date;
+  totalPrice: number;
+  status: string;
+  createdAt: Date;
+}

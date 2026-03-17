@@ -4,10 +4,11 @@ import RegisterForm from "./components/pages/register";
 import Router from "./components/Router";
 import HomePage from "./components/pages/HomePage";
 import Otp from "./components/pages/Otp";
-import MainPage from "./components/pages/mainPage";
-import Dashboard from "./components/pages/dashboard";
 import Cars from "./components/pages/Cars";
 import Booking from "./components/pages/Booking";
+import CarDetails from "./components/pages/CarDetails";
+import MainPage from "./components/pages/mainPage";
+import Dashboard from "./components/pages/dashboard";
 
 export const route = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ export const route = createBrowserRouter([
       {
         path: "/booking",
         element: <Booking />,
+      },
+      {
+        path: "/carDetails/:id",
+        element: <CarDetails />,
       },
     ],
   },

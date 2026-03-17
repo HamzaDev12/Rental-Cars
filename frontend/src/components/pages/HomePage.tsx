@@ -17,12 +17,14 @@ import { BsFuelPump, BsPeople } from "react-icons/bs";
 import { PiTrainSimpleLight } from "react-icons/pi";
 import { IoTimerSharp } from "react-icons/io5";
 import { GiHelp } from "react-icons/gi";
-import { SiTrustedshops } from "react-icons/si";
+import { SiBookingdotcom, SiTrustedshops } from "react-icons/si";
 import { FcFlashAuto } from "react-icons/fc";
 import { MdSendToMobile } from "react-icons/md";
 import image from "./../../assets/Contact Us.png";
 import toast from "react-hot-toast";
 import { createNotificationFn } from "../../store/notification/sendMessage";
+import { Link } from "react-router-dom";
+import { createBookingFn } from "../../store/bookings/createBooking";
 
 const HomePage = () => {
   const brands = [
@@ -38,12 +40,18 @@ const HomePage = () => {
   const createNotificationState = useSelector(
     (state: RootState) => state.sendMessage,
   );
+  const bookingState = useSelector((state: RootState) => state.createBooking);
+
   const dispatch = useDispatch<AppDispatch>();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+
+  const [carId, setCardId] = useState<number | null>(null);
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
 
   const toastId = "loading...";
   useEffect(() => {
@@ -72,8 +80,82 @@ const HomePage = () => {
     );
   };
 
+  const handleEdit = (id: number) => {
+    setCardId(id);
+  };
+
+  const handleSubmi = (e: FormEvent) => {
+    e.preventDefault();
+    dispatch(createBookingFn({ carId, endDate: end, startDate: start }));
+  };
+
+  useEffect(() => {
+    if (bookingState.error) {
+      toast.error(bookingState?.error, { id: toastId });
+    } else if (bookingState.data.data) {
+      toast.success(bookingState?.data?.message, { id: toastId });
+    }
+  }, [bookingState]);
   return (
     <div className="flex flex-col justify-center items-center mt-10 px-4">
+      <input type="checkbox" id="my_modal_6" className="modal-toggle" />
+      <div className="modal" role="dialog">
+        <div className="modal-box">
+          <h3 className="text-lg font-bold flex items-center">
+            <SiBookingdotcom />
+            Booking
+          </h3>
+
+          <form>
+            <label className="text-md font-medium">
+              Car ID <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="number"
+              disabled
+              name="carId"
+              value={carId}
+              onChange={(e) => setCardId(Number(e.target.value))}
+              className="bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 w-full border border-blue-500 text-white px-3 py-2 rounded-lg mb-3"
+            />
+
+            <label className="text-md font-medium">
+              Pickup Date <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="date"
+              name="start"
+              value={start}
+              onChange={(e) => setStart(e.target.value)}
+              className="bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 w-full border border-blue-500 text-white px-3 py-2 rounded-lg mb-3"
+            />
+
+            <label className="text-md font-medium">
+              Return Date <span className="text-red-400">*</span>
+            </label>
+            <input
+              type="date"
+              name="end"
+              value={end}
+              onChange={(e) => setEnd(e.target.value)}
+              className="bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 w-full border border-blue-500 text-white px-3 py-2 rounded-lg mb-3"
+            />
+            <div className="modal-action flex items-center">
+              <label
+                htmlFor="my_model_6"
+                onClick={handleSubmi}
+                className=" btn btn-info text-white tracking-wide "
+              >
+                Book Now
+              </label>
+              <label htmlFor="my_modal_6" className="btn btn-error">
+                Close!
+              </label>
+            </div>
+          </form>
+        </div>
+      </div>
+
       <div className="text-center">
         <h1 className="text-3xl md:text-5xl font-extrabold tracking-wide text-white">
           Find Your Perfect <span className="text-blue-400">Rental Cars</span>
@@ -222,11 +304,20 @@ const HomePage = () => {
               </div>
 
               <div className="pt-4 flex justify-between flex-wrap gap-2">
-                <button className="btn btn-outline btn-info px-10">
+                <Link
+                  to={`/carDetails/${car.id}`}
+                  className="btn btn-outline btn-info px-10"
+                >
                   View Detials
-                </button>
+                </Link>
 
-                <button className="btn btn-info px-14">Book Now</button>
+                <label
+                  htmlFor="my_modal_6"
+                  className="btn btn-info px-14"
+                  onClick={() => handleEdit(car.id)}
+                >
+                  Book Now
+                </label>
               </div>
             </div>
           ))}
