@@ -25,7 +25,11 @@ route.patch(
   updatedBooking,
 );
 
-route.get("/getAll", authentication, authorized([Role.ADMIN]), getAllBooking);
+route.get(
+  "/getAll",
+  authentication,
+  /*authorized([Role.ADMIN]),*/ getAllBooking,
+);
 
 route.delete(
   "/delete/:id",

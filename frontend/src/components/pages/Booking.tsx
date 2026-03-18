@@ -1,16 +1,21 @@
-import { useSelector } from "react-redux";
-import type { RootState } from "../../store/store";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../store/store";
+import { useEffect, useState } from "react";
 import { BiCalendar, BiSearch } from "react-icons/bi";
 import { ImLocation } from "react-icons/im";
 import Spinner from "../Spinner";
+import { getMyBookingsFn } from "../../store/bookings/getMyBooking";
 
 const Booking = () => {
   const bookingState = useSelector((state: RootState) => state.myBookings);
+  const dispatch = useDispatch<AppDispatch>();
 
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const limit = 9;
+  useEffect(() => {
+    dispatch(getMyBookingsFn());
+  }, [dispatch]);
 
   const start = (page - 1) * limit;
   const end = start + limit;

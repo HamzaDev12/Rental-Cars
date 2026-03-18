@@ -16,7 +16,7 @@ export const getMyBookingsFn = createAsyncThunk(
     const state = getState() as RootState;
     const token = state?.loginUser?.data?.token;
     try {
-      const res = await axios.get(`${baseURL}/cars/myBookings`, {
+      const res = await axios.get(`${baseURL}/bookings/myBookings`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -9,6 +9,10 @@ import Booking from "./components/pages/Booking";
 import CarDetails from "./components/pages/CarDetails";
 import MainPage from "./components/pages/mainPage";
 import Dashboard from "./components/pages/dashboard";
+import Car from "./components/layout/Car";
+import Bookings from "./components/layout/Booking";
+import Notification from "./components/layout/Notification";
+import Settings from "./components/layout/Settings";
 
 export const route = createBrowserRouter([
   {
@@ -53,6 +57,22 @@ export const route = createBrowserRouter([
       {
         index: true,
         element: <Dashboard />,
+      },
+      {
+        path: "car",
+        element: <Car />,
+      },
+      {
+        path: "booking",
+        element: <Bookings />,
+      },
+      {
+        path: "notification",
+        element: <Notification />,
+      },
+      {
+        path: "settings",
+        element: <Settings />,
       },
     ],
   },

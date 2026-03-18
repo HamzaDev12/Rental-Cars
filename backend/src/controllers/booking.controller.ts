@@ -288,8 +288,19 @@ export const getAllBooking = async (req: AuthRequest, res: Response) => {
       prisma.booking.count({ where }),
     ]);
 
-    return shortRes(res, 200, "Bookings fetched successfully", {
-      data: booking,
+    // return shortRes(res, 200, "Bookings fetched successfully", {
+    //   data: booking,
+    //   pagination: {
+    //     page: pageNumber,
+    //     limit: limitNumber,
+    //     total,
+    //     totalPages: Math.ceil(total / limitNumber),
+    //   },
+    // });
+
+    res.status(200).json({
+      message: "Bookings fetched successfully",
+      booking,
       pagination: {
         page: pageNumber,
         limit: limitNumber,

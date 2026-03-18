@@ -2,10 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { baseURL, somError } from "../../constants/message";
 import type { RootState } from "../store";
-import type { IGetAllMyBookings } from "../../types/booking.types";
+import type { IGetAllBookings } from "../../types/booking.types";
 
 const initialState = {
-  data: {} as IGetAllMyBookings,
+  data: {} as IGetAllBookings,
   loading: false,
   error: "",
 };
@@ -37,7 +37,7 @@ export const getAllBookings = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder.addCase(getAllBookingsFn.pending, (state) => {
-      state.data = {} as IGetAllMyBookings;
+      state.data = {} as IGetAllBookings;
       state.error = "";
       state.loading = true;
     });
@@ -49,7 +49,7 @@ export const getAllBookings = createSlice({
     });
 
     builder.addCase(getAllBookingsFn.rejected, (state, action) => {
-      state.data = {} as IGetAllMyBookings;
+      state.data = {} as IGetAllBookings;
       state.error = String(action.payload);
       state.loading = false;
     });

@@ -2,13 +2,14 @@ import logo from "./../../assets/Logo.png";
 import { BiBookAdd, BiCar, BiNotification, BiX } from "react-icons/bi";
 import { AiFillDashboard } from "react-icons/ai";
 import { FcSettings } from "react-icons/fc";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store";
 import { IoLogOutOutline } from "react-icons/io5";
 import { logout } from "../../store/auth/loginUser";
 import toast from "react-hot-toast";
 import { BsBack } from "react-icons/bs";
+import { useEffect } from "react";
 
 type SidebarProps = {
   isOpen: boolean;
@@ -19,6 +20,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
   const whoami = useSelector((state: RootState) => state.loginUser);
   const user = whoami?.data?.user;
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const toastId = "loading..";
 
@@ -38,11 +40,21 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 
   const navItems = [
     { name: "Dashboard", icon: <AiFillDashboard />, path: "/dashboard" },
-    { name: "Car", icon: <BiCar />, path: "/car" },
-    { name: "Booking", icon: <BiBookAdd />, path: "/booking" },
-    { name: "Notifications", icon: <BiNotification />, path: "/notification" },
-    { name: "Settings", icon: <FcSettings />, path: "/settings" },
+    { name: "Car", icon: <BiCar />, path: "/dashboard/car" },
+    { name: "Booking", icon: <BiBookAdd />, path: "/dashboard/booking" },
+    {
+      name: "Notifications",
+      icon: <BiNotification />,
+      path: "/dashboard/notification",
+    },
+    { name: "Settings", icon: <FcSettings />, path: "/dashboard/settings" },
   ];
+
+  useEffect(() => {
+    if (!whoami.data.user) {
+      navigate("/");
+    }
+  }, [navigate, whoami]);
 
   return (
     <aside
