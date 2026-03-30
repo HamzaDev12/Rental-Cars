@@ -11,7 +11,7 @@ const Cars = () => {
   const [search, setSearch] = useState("");
 
   const [page, setPage] = useState(1);
-  const limit = 9;
+  const limit = 10;
 
   const filterCars = carState?.data?.cars.filter((car) => {
     const colunm = `${car.name} ${car.model}`.toLowerCase();

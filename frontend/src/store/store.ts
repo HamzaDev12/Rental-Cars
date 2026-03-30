@@ -9,11 +9,13 @@ import { sendOTPCode } from "./auth/re-sendOtp";
 import { getMyBookings } from "./bookings/getMyBooking";
 import { createBooking } from "./bookings/createBooking";
 import { getAllBookings } from "./bookings/getAllBookings";
+import { createCars } from "./cars/createCar";
 
 export const store = configureStore({
   reducer: {
     // cars
     getAllCars: getCars.reducer,
+    createCar: createCars.reducer,
 
     // bookings
     myBookings: getMyBookings.reducer,
