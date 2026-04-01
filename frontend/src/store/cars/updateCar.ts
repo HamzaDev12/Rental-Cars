@@ -10,13 +10,17 @@ const initialState = {
   error: "",
 };
 
-export const createCarsFn = createAsyncThunk(
-  "create/cars",
-  async (data: FormData, { rejectWithValue, getState }) => {
+export const updateCarsFn = createAsyncThunk(
+  "update/cars",
+  async (
+    { id, formData }: { id: number | null; formData: FormData },
+    { rejectWithValue, getState },
+  ) => {
     const state = getState() as RootState;
     const token = state?.loginUser?.data?.token;
+
     try {
-      const res = await axios.post(`${baseURL}/cars/create`, data, {
+      const res = await axios.patch(`${baseURL}/cars/update/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -31,24 +35,24 @@ export const createCarsFn = createAsyncThunk(
   },
 );
 
-export const createCars = createSlice({
-  name: "createCars",
+export const updateCars = createSlice({
+  name: "updateCars",
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(createCarsFn.pending, (state) => {
+    builder.addCase(updateCarsFn.pending, (state) => {
       state.data = {} as ICreateCarResponse;
       state.error = "";
       state.loading = true;
     });
 
-    builder.addCase(createCarsFn.fulfilled, (state, action) => {
+    builder.addCase(updateCarsFn.fulfilled, (state, action) => {
       state.data = action.payload;
       state.error = "";
       state.loading = false;
     });
 
-    builder.addCase(createCarsFn.rejected, (state, action) => {
+    builder.addCase(updateCarsFn.rejected, (state, action) => {
       state.data = {} as ICreateCarResponse;
       state.error = String(action.payload);
       state.loading = false;

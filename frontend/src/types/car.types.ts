@@ -71,3 +71,18 @@ export interface Data {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface ICreateCarIU {
+  name: string;
+  model: string;
+  year: number | string;
+  pricePerDay: number | string;
+  imageUrl: string | File;
+  seats: number | string;
+  mileage: number | string;
+  transmission: string;
+  location: string;
+  fuelType: string;
+  description: string;
+  id: number | null;
+}

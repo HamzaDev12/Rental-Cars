@@ -9,10 +9,13 @@ import { PiPencil } from "react-icons/pi";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { LuDelete } from "react-icons/lu";
 import { createCarsFn } from "../../store/cars/createCar";
+import type { ICreateCarIU } from "../../types/car.types";
+import { updateCarsFn } from "../../store/cars/updateCar";
 
 const Car = () => {
   const CarState = useSelector((state: RootState) => state.getAllCars);
   const createCarState = useSelector((state: RootState) => state.createCar);
+  const updateCarState = useSelector((state: RootState) => state.updateCar);
   const dispatch = useDispatch<AppDispatch>();
   const toastId = "loading....";
 
@@ -29,6 +32,7 @@ const Car = () => {
   const [price, SetPrice] = useState<number | "">("");
   const [seats, SetSeats] = useState<number | "">("");
   const [image, setImage] = useState<File | string>("");
+  const [id, setId] = useState<number | null>(null);
 
   const filtering = CarState.data.cars?.filter((car) => {
     const column = `${car.name} ${car.model} `;
@@ -56,21 +60,60 @@ const Car = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    dispatch(
-      createCarsFn({
-        description,
-        fuelType,
-        imageUrl: image,
-        location,
-        mileage,
-        model,
-        name,
-        pricePerDay: price,
-        seats,
-        transmission,
-        year,
-      }),
-    );
+    const formData = new FormData();
+
+    formData.append("name", name);
+    formData.append("model", model);
+    formData.append("transmission", transmission);
+    formData.append("location", location);
+    formData.append("fuelType", fuelType);
+    formData.append("description", description);
+    formData.append("pricePerDay", String(price));
+    formData.append("seats", String(seats));
+    formData.append("year", String(year));
+    formData.append("mileage", String(mileage));
+
+    if (image instanceof File) {
+      formData.append("image", image);
+    }
+
+    dispatch(createCarsFn(formData));
+  };
+
+  const handleUpdate = (e: FormEvent) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("model", model);
+    formData.append("transmission", transmission);
+    formData.append("location", location);
+    formData.append("fuelType", fuelType);
+    formData.append("description", description);
+    formData.append("pricePerDay", String(price));
+    formData.append("seats", String(seats));
+    formData.append("year", String(year));
+    formData.append("mileage", String(mileage));
+
+    if (image instanceof File) {
+      formData.append("image", image);
+    }
+
+    dispatch(updateCarsFn({ formData, id }));
+  };
+
+  const handleEdit = (data: ICreateCarIU) => {
+    SetDescription(data.description);
+    SetFuelType(data.fuelType);
+    SetMilage(Number(data.mileage));
+    SetLocation(data.location);
+    SetModel(data.model);
+    SetPrice(Number(data.pricePerDay));
+    SetName(data.name);
+    SetSeats(Number(data.seats));
+    SetTransmission(data.transmission);
+    SetYear(Number(data.year));
+    setId(data.id);
   };
 
   useEffect(() => {
@@ -83,8 +126,144 @@ const Car = () => {
     }
   }, [createCarState, dispatch]);
 
+  useEffect(() => {
+    if (updateCarState.error) {
+      toast.error(updateCarState?.error, { id: toastId });
+    }
+    if (updateCarState.data.data) {
+      toast.success(updateCarState?.data?.message, { id: toastId });
+      dispatch(getCarsFn());
+    }
+  }, [updateCarState, dispatch]);
+
   return (
     <div className="p-4 space-y-10">
+      <input type="checkbox" id="my_modal_7" className="modal-toggle" />
+      <div className="modal" role="dialog">
+        <div className="modal-box">
+          <h3 className="text-lg font-bold flex items-center gap-x-1.5 text-blue-500">
+            <BiCar />
+            Update Car
+          </h3>
+          <form
+            action=""
+            className="mt-3 flex flex-col gap-y-1.5"
+            onSubmit={handleUpdate}
+          >
+            <input
+              type="number"
+              name="id"
+              value={id || ""}
+              onChange={(e) => setId(Number(e.target.value))}
+              className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
+            />
+            <input
+              type="text"
+              placeholder="Enter Brand Name"
+              name="name"
+              value={name}
+              onChange={(e) => SetName(e.target.value)}
+              className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
+            />
+            <div className="flex gap-x-1.5">
+              <input
+                type="text"
+                placeholder="Enter Model Car"
+                className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
+                name="model"
+                value={model}
+                onChange={(e) => SetModel(e.target.value)}
+              />
+              <input
+                type="text"
+                name="transmission"
+                value={transmission}
+                onChange={(e) => SetTransmission(e.target.value)}
+                placeholder="Enter transmission car"
+                className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
+              />
+            </div>
+            <input
+              type="text"
+              placeholder="Enter Location"
+              name="location"
+              value={location}
+              onChange={(e) => SetLocation(e.target.value)}
+              className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
+            />
+            <input
+              type="text"
+              name="fuelType"
+              value={fuelType}
+              onChange={(e) => SetFuelType(e.target.value)}
+              placeholder="Enter Fuel Type"
+              className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
+            />
+            <div className="flex gap-x-1.5">
+              <input
+                type="file"
+                name="image"
+                className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) setImage(file);
+                }}
+              />
+              <input
+                type="number"
+                name="seats"
+                value={seats}
+                onChange={(e) => SetSeats(Number(e.target.value))}
+                placeholder="Enter Number of seats"
+                className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
+              />
+            </div>
+            <input
+              type="text"
+              name="price"
+              value={price}
+              onChange={(e) => SetPrice(Number(e.target.value))}
+              placeholder="Enter price car"
+              className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
+            />
+            <div className="flex gap-x-1.5">
+              <input
+                type="number"
+                name="year"
+                className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
+                value={year}
+                onChange={(e) => SetYear(Number(e.target.value))}
+                placeholder="Enter year of car"
+              />
+              <input
+                type="number"
+                name="mileage"
+                value={mileage}
+                onChange={(e) => SetMilage(Number(e.target.value))}
+                placeholder="Enter Number of Mileage"
+                className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
+              />
+            </div>
+            <input
+              type="text"
+              name="description"
+              value={description}
+              onChange={(e) => SetDescription(e.target.value)}
+              placeholder="Enter description "
+              className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
+            />
+            <div className="modal-action">
+              <label htmlFor="my_modal_7" className="btn">
+                Close!
+              </label>
+              <label htmlFor="my_modal_7" className="btn btn-soft btn-accent">
+                <button> Save Changes</button>
+              </label>
+            </div>
+          </form>
+        </div>
+      </div>
+
       <input type="checkbox" id="my_modal_6" className="modal-toggle" />
       <div className="modal" role="dialog">
         <div className="modal-box">
@@ -131,18 +310,6 @@ const Car = () => {
               onChange={(e) => SetLocation(e.target.value)}
               className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
             />
-            <div className="flex gap-x-1.5">
-              <input
-                type="text"
-                placeholder="Enter Brand Name"
-                className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
-              />
-              <input
-                type="text"
-                placeholder="Enter Brand Name"
-                className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
-              />
-            </div>
             <input
               type="text"
               name="fuelType"
@@ -209,7 +376,7 @@ const Car = () => {
                 Close!
               </label>
               <label htmlFor="my_modal_6" className="btn btn-soft btn-accent">
-                Save Changes
+                <button> Save Changes</button>
               </label>
             </div>
           </form>
@@ -286,7 +453,17 @@ const Car = () => {
                 <td className="px-4 py-2 text-center">{car.fuelType}</td>
                 <td className="px-4 py-2 text-center">{car.bookings.length}</td>
                 <td className="px-4 py-2 flex gap-x-2.5 items-center justify-center">
-                  <button className="btn btn-soft btn-accent ">
+                  <button
+                    className="btn btn-soft btn-accent"
+                    onClick={() => {
+                      handleEdit(car);
+                      (
+                        document.getElementById(
+                          "my_modal_7",
+                        ) as HTMLInputElement
+                      ).checked = true;
+                    }}
+                  >
                     <PiPencil />
                     Edit
                   </button>

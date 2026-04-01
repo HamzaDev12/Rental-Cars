@@ -10,12 +10,14 @@ import { getMyBookings } from "./bookings/getMyBooking";
 import { createBooking } from "./bookings/createBooking";
 import { getAllBookings } from "./bookings/getAllBookings";
 import { createCars } from "./cars/createCar";
+import { updateCars } from "./cars/updateCar";
 
 export const store = configureStore({
   reducer: {
     // cars
     getAllCars: getCars.reducer,
     createCar: createCars.reducer,
+    updateCar: updateCars.reducer,
 
     // bookings
     myBookings: getMyBookings.reducer,

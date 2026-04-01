@@ -109,7 +109,7 @@ export const updateCar = [
           pricePerDay: Number(pricePerDay) ?? car.pricePerDay,
           imageUrl: image ?? car.imageUrl,
           isAvailable: isAvailable ?? car.isAvailable,
-          seats: seats ?? car.seats,
+          seats: Number(seats) ?? car.seats,
           mileage: Number(mileage) ?? car.mileage,
           transmission: transmission ?? car.transmission,
           location: location ?? car.location,
