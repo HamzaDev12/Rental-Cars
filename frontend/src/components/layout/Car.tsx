@@ -11,11 +11,15 @@ import { LuDelete } from "react-icons/lu";
 import { createCarsFn } from "../../store/cars/createCar";
 import type { ICreateCarIU } from "../../types/car.types";
 import { updateCarsFn } from "../../store/cars/updateCar";
+import { MdDelete } from "react-icons/md";
+import { deleteCarsFn } from "../../store/cars/deleteCar";
 
 const Car = () => {
   const CarState = useSelector((state: RootState) => state.getAllCars);
   const createCarState = useSelector((state: RootState) => state.createCar);
   const updateCarState = useSelector((state: RootState) => state.updateCar);
+  const deleteCarState = useSelector((state: RootState) => state.deleteCar);
+
   const dispatch = useDispatch<AppDispatch>();
   const toastId = "loading....";
 
@@ -33,6 +37,7 @@ const Car = () => {
   const [seats, SetSeats] = useState<number | "">("");
   const [image, setImage] = useState<File | string>("");
   const [id, setId] = useState<number | null>(null);
+  const [show, setShow] = useState(false);
 
   const filtering = CarState.data.cars?.filter((car) => {
     const column = `${car.name} ${car.model} `;
@@ -116,6 +121,20 @@ const Car = () => {
     setId(data.id);
   };
 
+  const handlDelete = () => {
+    if (!id) {
+      toast.error("please select id you want to delete");
+      return;
+    }
+
+    dispatch(deleteCarsFn({ id }));
+    if (deleteCarState?.data?.message) {
+      setShow(false);
+      setId(null);
+      return;
+    }
+  };
+
   useEffect(() => {
     if (createCarState.error) {
       toast.error(createCarState?.error, { id: toastId });
@@ -136,8 +155,45 @@ const Car = () => {
     }
   }, [updateCarState, dispatch]);
 
+  useEffect(() => {
+    if (deleteCarState.error) {
+      toast.error(deleteCarState?.error, { id: toastId });
+    }
+    if (deleteCarState.data.data) {
+      toast.success(deleteCarState?.data?.message, { id: toastId });
+      dispatch(getCarsFn());
+    }
+  }, [deleteCarState, dispatch]);
+
   return (
     <div className="p-4 space-y-10">
+      {show && (
+        <div className="inset-0 fixed flex justify-center items-center shadow-lg bg-black/30 ">
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <p className="text-lg text-blue-400 flex gap-x-1.5 tracking-wide items-center">
+              <MdDelete /> Delete Car?
+            </p>
+            <p className="text-sm font-medium text-gray-300  tracking-wide">
+              This will delete permenantly, do you want click delete{" "}
+            </p>
+            <div className="flex justify-end gap-x-1.5 mt-2.5 ">
+              <button
+                className="bg-gray-600 cursor-pointer rounded-full border border-gray-200 px-3 py-2 tracking-wide"
+                onClick={() => setShow(false)}
+              >
+                Cencal
+              </button>
+              <button
+                className="bg-red-600 cursor-pointer rounded-full border-2 border-gray-200 px-3 py-2 tracking-wide"
+                onClick={handlDelete}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <input type="checkbox" id="my_modal_7" className="modal-toggle" />
       <div className="modal" role="dialog">
         <div className="modal-box">
@@ -467,7 +523,13 @@ const Car = () => {
                     <PiPencil />
                     Edit
                   </button>
-                  <button className="btn btn-soft btn-error ">
+                  <button
+                    className="btn btn-soft btn-error "
+                    onClick={() => {
+                      setShow(true);
+                      setId(car.id);
+                    }}
+                  >
                     <LuDelete />
                     Delete
                   </button>
