@@ -1,21 +1,34 @@
 import { BiSearch } from "react-icons/bi";
-import { MdCarRental } from "react-icons/md";
+import { MdCarRental, MdDelete, MdUpdate } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import toast from "react-hot-toast";
 import { getAllBookingsFn } from "../../store/bookings/getAllBookings";
 import { LuDelete } from "react-icons/lu";
 import { PiPencil } from "react-icons/pi";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { updateBookingFn } from "../../store/bookings/updateBooking";
+import type { IUpdateBookingUI } from "../../types/booking.types";
+import { deleteBookingFn } from "../../store/bookings/deleteBooking";
 
 const Booking = () => {
   const bookingState = useSelector((state: RootState) => state.getAllBooking);
+  const updateBookingState = useSelector(
+    (state: RootState) => state.updateBooking,
+  );
+  const deleteBookingState = useSelector(
+    (state: RootState) => state.deleteBooking,
+  );
   const dispatch = useDispatch<AppDispatch>();
   const toastId = "loading...";
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [id, setId] = useState<number | null>(null);
+  const [status, setStatus] = useState("");
+  const [show, setShow] = useState(false);
+
   const limit = 10;
 
   const filterbooking = bookingState.data.booking?.filter((b) => {
@@ -27,6 +40,30 @@ const Booking = () => {
   const end = start + limit;
   const totalPages = Math.ceil((filterbooking?.length || 0) / limit);
 
+  const handleUpdate = (e: FormEvent) => {
+    e.preventDefault();
+    dispatch(updateBookingFn({ id, status }));
+  };
+
+  const handleEdit = (data: IUpdateBookingUI) => {
+    setId(data.id);
+    setStatus(data.status);
+  };
+
+  const handlDelete = () => {
+    if (!id) {
+      toast.error("please select id you want to delete");
+      return;
+    }
+
+    dispatch(deleteBookingFn({ id }));
+    if (deleteBookingState?.data?.message) {
+      setShow(false);
+      setId(null);
+      return;
+    }
+  };
+
   useEffect(() => {
     if (bookingState.error) {
       toast.error(bookingState?.error, { id: toastId });
@@ -37,10 +74,100 @@ const Booking = () => {
   }, [bookingState]);
 
   useEffect(() => {
+    if (updateBookingState.error) {
+      toast.error(updateBookingState?.error, { id: toastId });
+    }
+    if (updateBookingState.data.message) {
+      toast.success(updateBookingState?.data?.message, { id: toastId });
+      dispatch(getAllBookingsFn());
+    }
+  }, [updateBookingState, dispatch]);
+
+  useEffect(() => {
+    if (deleteBookingState.error) {
+      toast.error(deleteBookingState?.error, { id: toastId });
+    }
+    if (deleteBookingState.data.message) {
+      toast.success(deleteBookingState?.data?.message, { id: toastId });
+      dispatch(getAllBookingsFn());
+    }
+  }, [deleteBookingState, dispatch]);
+
+  useEffect(() => {
     dispatch(getAllBookingsFn());
   }, [dispatch]);
   return (
     <div className="p-4 space-y-10">
+      {show && (
+        <div className="inset-0 fixed flex justify-center items-center shadow-lg bg-black/30 ">
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <p className="text-lg text-blue-400 flex gap-x-1.5 tracking-wide items-center">
+              <MdDelete /> Delete Booking?
+            </p>
+            <p className="text-sm font-medium text-gray-300  tracking-wide">
+              This will delete permenantly, do you want click delete{" "}
+            </p>
+            <div className="flex justify-end gap-x-1.5 mt-2.5 ">
+              <button
+                className="bg-gray-600 cursor-pointer rounded-full border border-gray-200 px-3 py-2 tracking-wide"
+                onClick={() => setShow(false)}
+              >
+                Cencal
+              </button>
+              <button
+                className="bg-red-600 cursor-pointer rounded-full border-2 border-gray-200 px-3 py-2 tracking-wide"
+                onClick={handlDelete}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <input type="checkbox" id="my_modal_6" className="modal-toggle" />
+      <div className="modal" role="dialog">
+        <div className="modal-box">
+          <h3 className="text-lg font-bold flex gap-x-1.5 text-blue-400 items-center">
+            <MdUpdate /> Update Booking!
+          </h3>
+          <form
+            action=""
+            onSubmit={handleUpdate}
+            className="flex flex-col gap-y-1.5 mt-2"
+          >
+            <input
+              type="number"
+              name="id"
+              disabled={true}
+              value={id || ""}
+              onChange={(e) => setId(Number(e.target.value))}
+              className="bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
+            />
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="select appearance-none bg-gray-700 border w-full text-white placeholder:text-gray-300 border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 rounded-lg py-2 px-2"
+            >
+              <option value="" disabled>
+                Select Status
+              </option>
+              <option value="PENDING">Pending</option>
+              <option value="CONFIRMED">Confirmed</option>
+              <option value="COMPLETED">Completed</option>
+              <option value="CANCELED">Canceled</option>
+            </select>
+            <div className="modal-action">
+              <label htmlFor="my_modal_6" className="btn">
+                Close!
+              </label>
+              <label htmlFor="my_modal_6" className="btn btn-soft btn-accent">
+                <button> Save Changes</button>
+              </label>
+            </div>
+          </form>
+        </div>
+      </div>
       <div className="border border-blue-400 rounded-lg shadow bg-gray-900 flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-4">
         <div className="flex items-center gap-3">
           <div className="bg-blue-300 w-14 h-14 flex items-center justify-center rounded-lg">
@@ -101,11 +228,24 @@ const Booking = () => {
                 </td>
                 <td className="px-4 py-2 text-center ">{b.user?.name}</td>
                 <td className="px-4 py-2 flex gap-x-2.5 items-center justify-center">
-                  <button className="btn btn-soft btn-accent ">
+                  <button
+                    className="btn btn-soft btn-accent "
+                    onClick={() => {
+                      handleEdit(b);
+                      (
+                        document.getElementById(
+                          "my_modal_6",
+                        ) as HTMLInputElement
+                      ).checked = true;
+                    }}
+                  >
                     <PiPencil />
                     Edit
                   </button>
-                  <button className="btn btn-soft btn-error ">
+                  <button
+                    className="btn btn-soft btn-error "
+                    onClick={() => setShow(true)}
+                  >
                     <LuDelete />
                     Delete
                   </button>

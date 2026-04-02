@@ -186,7 +186,7 @@ export const updatedBooking = async (req: AuthRequest, res: Response) => {
       await sentNotification(booked.user.email, message);
     }
 
-    shortRes(res, 200, "Updated booking seccussfully", updated);
+    shortRes(res, 200, "Updated booking seccussfully");
   } catch (error) {
     catchError(error, res);
   }

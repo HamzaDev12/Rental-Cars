@@ -12,6 +12,8 @@ import { getAllBookings } from "./bookings/getAllBookings";
 import { createCars } from "./cars/createCar";
 import { updateCars } from "./cars/updateCar";
 import { deleteCars } from "./cars/deleteCar";
+import { updateBooking } from "./bookings/updateBooking";
+import { deleteBooking } from "./bookings/deleteBooking";
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +27,8 @@ export const store = configureStore({
     myBookings: getMyBookings.reducer,
     createBooking: createBooking.reducer,
     getAllBooking: getAllBookings.reducer,
+    updateBooking: updateBooking.reducer,
+    deleteBooking: deleteBooking.reducer,
 
     // notification
     sendMessage: createNotification.reducer,

@@ -90,3 +90,12 @@ export interface Pagination {
   total: number;
   totalPages: number;
 }
+
+export interface IUpdateBookingResponse {
+  message: string;
+}
+
+export interface IUpdateBookingUI {
+  status: string;
+  id: number | null;
+}
