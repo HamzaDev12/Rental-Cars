@@ -13,6 +13,7 @@ import Car from "./components/layout/Car";
 import Bookings from "./components/layout/Booking";
 import Notification from "./components/layout/Notification";
 import Settings from "./components/layout/Settings";
+import Forget from "./components/pages/Forget";
 
 export const route = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ export const route = createBrowserRouter([
       {
         path: "/carDetails/:id",
         element: <CarDetails />,
+      },
+      {
+        path: "/forget",
+        element: <Forget />,
       },
     ],
   },

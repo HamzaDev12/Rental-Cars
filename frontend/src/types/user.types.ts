@@ -77,3 +77,23 @@ export interface IVerifyPayload {
 export interface ISendOTPResponse {
   message: string;
 }
+
+export interface IGenerateCode {
+  email: string;
+}
+
+export interface IForgetPassword {
+  confirm: string;
+  password: string;
+  email: string;
+}
+
+export interface IForgetPasswordResponse {
+  message: string;
+}
+
+export interface IChangePasswordPayload {
+  currentPassword: string;
+  confirm: string;
+  password: string;
+}

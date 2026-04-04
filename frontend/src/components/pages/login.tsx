@@ -139,9 +139,12 @@ const LoginForm = () => {
                 </span>
               </label>
             </div>
-            <span className="text-sm underline text-white cursor-pointer tracking-wide">
+            <Link
+              to="/forget"
+              className="text-sm underline text-white cursor-pointer tracking-wide"
+            >
               forget password
-            </span>
+            </Link>
           </div>
           <button
             disabled={loginSate.loading || !formik.isValid}

@@ -14,6 +14,9 @@ import { updateCars } from "./cars/updateCar";
 import { deleteCars } from "./cars/deleteCar";
 import { updateBooking } from "./bookings/updateBooking";
 import { deleteBooking } from "./bookings/deleteBooking";
+import { forgetPassword } from "./auth/forgetPassword";
+import { changePassword } from "./auth/changePassword";
+import { updateUser } from "./auth/updateUser";
 
 export const store = configureStore({
   reducer: {
@@ -39,6 +42,9 @@ export const store = configureStore({
     createUser: createUser.reducer,
     verifyCode: verificationCode.reducer,
     sendCode: sendOTPCode.reducer,
+    forgetPassword: forgetPassword.reducer,
+    changePassword: changePassword.reducer,
+    updateUser: updateUser.reducer,
   },
   devTools: true,
 });

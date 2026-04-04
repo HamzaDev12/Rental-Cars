@@ -14,6 +14,7 @@ import {
   login,
   requestChangeEmail,
   updatePassword,
+  updateUser,
   verifyOtp,
   whoami,
 } from "../controllers/user.controller.js";
@@ -52,4 +53,5 @@ route.patch("/verifyEmailChange", authentication, confirmChangeEmail);
 
 route.get("/whoami", authentication, whoami);
 
+route.patch("/update", authentication, updateUser);
 export default route;
