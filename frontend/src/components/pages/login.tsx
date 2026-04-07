@@ -61,7 +61,7 @@ const LoginForm = () => {
 
   return (
     <div className="min-h-screen min-w-full flex justify-center items-center flex-col bg-gray-800 text-white">
-      <div className="bg-gray-950 border rounded-lg shadow-[rgba(0,0,0,0.02)_0px_1px_3px_0px,rgba(27,31,35,0.15)_0px_0px_0px_1px] p-8 mt-5 w-[450px]">
+      <div className="bg-gray-950 border rounded-lg shadow-[rgba(0,0,0,0.02)_0px_1px_3px_0px,rgba(27,31,35,0.15)_0px_0px_0px_1px] p-8 mt-5 w-112.5">
         <div className="flex items-center gap-x-2">
           <div className="w-20 bg-gray-700 border border-gray-300 rounded-lg">
             <img src={logo} alt="" className="w-full" />
@@ -77,7 +77,7 @@ const LoginForm = () => {
         </div>
         <form action="" className="mt-4" onSubmit={formik.handleSubmit}>
           {loginSate.error && (
-            <p className="text-center bg-[#FEBBBD] w-[325px] m-auto p-1 text-black rounded-md flex justify-center items-center">
+            <p className="text-center bg-[#FEBBBD] w-81.25 m-auto p-1 text-black rounded-md flex justify-center items-center">
               {loginSate.error && loginSate.error}
             </p>
           )}{" "}
@@ -93,7 +93,7 @@ const LoginForm = () => {
               name="email"
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
-              className="bg-gray-800 placeholder:text-gray-400 w-[390px] text-white border border-gray-300 rounded-lg px-9 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-gray-800 placeholder:text-gray-400 w-97.5 text-white border border-gray-300 rounded-lg px-9 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <p className="text-sm text-red-400">
@@ -111,11 +111,11 @@ const LoginForm = () => {
               value={formik.values.password}
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
-              className="bg-gray-800 placeholder:text-gray-400 w-[390px] text-white border border-gray-300 rounded-lg px-9 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-gray-800 placeholder:text-gray-400 w-97.5 text-white border border-gray-300 rounded-lg px-9 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <span
               onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute bottom-2 left-[348px] cursor-pointer"
+              className="absolute bottom-2 left-87 cursor-pointer"
             >
               {showPassword ? (
                 <AiFillEyeInvisible className="text-gery-300 font-bold text-2xl" />
@@ -148,7 +148,7 @@ const LoginForm = () => {
           </div>
           <button
             disabled={loginSate.loading || !formik.isValid}
-            className="btn btn-info text-2xl w-[390px] font-black text-blue-700 uppercase tracking-wider mt-4"
+            className="btn btn-info text-2xl w-97.5 font-black text-blue-700 uppercase tracking-wider mt-4"
           >
             <LuLogIn /> {loginSate.loading ? "Login..." : "Login"}
           </button>

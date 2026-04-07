@@ -75,7 +75,7 @@ const Otp: React.FC = () => {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-900 px-4">
-      <div className="w-[440px]  bg-gray-950 border border-gray-300 rounded-2xl p-8 shadow-xl">
+      <div className="w-110  bg-gray-950 border border-gray-300 rounded-2xl p-8 shadow-xl">
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-semibold text-white">
             OTP Verification

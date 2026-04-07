@@ -97,3 +97,8 @@ export interface IChangePasswordPayload {
   confirm: string;
   password: string;
 }
+
+export interface IUpdateUserPayload {
+  name: string;
+  image: string;
+}

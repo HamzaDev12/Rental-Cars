@@ -39,7 +39,7 @@ route.patch(
 route.post("/login", loginUserValidator, validations, login);
 
 route.patch(
-  "/updatePassword",
+  "/updatePassword/:id",
   authentication,
   authorized([Role.ADMIN, Role.CUSTOMER]),
   // changePasswordValidation,
@@ -47,11 +47,11 @@ route.patch(
   updatePassword,
 );
 
-route.post("/changeEmail", authentication, requestChangeEmail);
+route.patch("/changeEmail", authentication, requestChangeEmail);
 
 route.patch("/verifyEmailChange", authentication, confirmChangeEmail);
 
 route.get("/whoami", authentication, whoami);
 
-route.patch("/update", authentication, updateUser);
+route.patch("/update/:id", authentication, updateUser);
 export default route;

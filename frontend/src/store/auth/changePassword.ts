@@ -15,15 +15,22 @@ const initialState = {
 
 export const changePasswordFn = createAsyncThunk(
   "change/password",
-  async (data: IChangePasswordPayload, { rejectWithValue, getState }) => {
+  async (
+    { data, id }: { id: number | null; data: IChangePasswordPayload },
+    { rejectWithValue, getState },
+  ) => {
     const state = getState() as RootState;
     const token = state?.loginUser?.data?.token;
     try {
-      const res = await axios.patch(`${baseURL}/users/updatePassword`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const res = await axios.patch(
+        `${baseURL}/users/updatePassword/${id}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       return res.data;
     } catch (error) {
       if (error instanceof AxiosError) {

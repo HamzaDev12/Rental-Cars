@@ -12,11 +12,14 @@ const initialState = {
 
 export const updateUserFn = createAsyncThunk(
   "update/user",
-  async (data: FormData, { rejectWithValue, getState }) => {
+  async (
+    { data, id }: { data: FormData; id: number | null },
+    { rejectWithValue, getState },
+  ) => {
     const state = getState() as RootState;
     const token = state?.loginUser?.data?.token;
     try {
-      const res = await axios.patch(`${baseURL}/users/update`, data, {
+      const res = await axios.patch(`${baseURL}/users/update/${id}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -255,6 +255,11 @@ export const login = async (req: Request, res: Response) => {
 
 export const updatePassword = async (req: AuthRequest, res: Response) => {
   try {
+    const { id } = req.params;
+    if (!id || isNaN(Number(id))) {
+      shortRes(res, 400, "invalid user id");
+      return;
+    }
     const { password, confirm, currentPassword }: IChangePassword = req.body;
     if (!password || !confirm || !currentPassword) {
       shortRes(res, 400, "All fields are required");
@@ -263,7 +268,7 @@ export const updatePassword = async (req: AuthRequest, res: Response) => {
 
     const user = await prisma.user.findUnique({
       where: {
-        id: req.userId!,
+        id: Number(id),
       },
     });
 
@@ -411,19 +416,20 @@ export const updateUser = [
   uploads.single("image"),
   async (req: AuthRequest, res: Response) => {
     try {
-      const { name, role }: { role: string; name: string } = req.body;
+      const { id } = req.params;
+      if (!id || isNaN(Number(id))) {
+        shortRes(res, 400, "invalid user id");
+        return;
+      }
+      const { name }: { name: string } = req.body;
       const image = req.file ? req.file.filename : null;
 
-      if (!name || !role) {
+      if (!name) {
         return shortRes(res, 400, "All fields are required");
       }
 
-      if (!Object.values(Role).includes(role as Role)) {
-        return shortRes(res, 400, "Invalid role provided");
-      }
-
       const user = await prisma.user.findUnique({
-        where: { id: req.userId! },
+        where: { id: Number(id) },
       });
       if (!user) {
         return shortRes(res, 404, "User not found, please login first");
@@ -437,10 +443,9 @@ export const updateUser = [
       }
 
       await prisma.user.update({
-        where: { id: user.id },
+        where: { id: Number(id) },
         data: {
           name,
-          role: role as Role,
           image: image || user.image,
         },
       });

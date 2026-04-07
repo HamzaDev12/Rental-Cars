@@ -46,7 +46,7 @@ const CarDetails = () => {
               <img
                 src={`http://localhost:3000/uploads/${car.imageUrl}`}
                 alt=""
-                className="w-full lg:w-[750px] rounded-lg"
+                className="w-full lg:w-187.5 rounded-lg"
               />
 
               <h1 className="text-blue-400 pb-2 pt-4 uppercase text-2xl font-bold tracking-wide">

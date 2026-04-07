@@ -107,7 +107,7 @@ const RegisterForm = () => {
 
   return (
     <div className="min-h-screen min-w-full flex justify-center items-center flex-col text-white bg-gray-800">
-      <div className="bg-gray-950 w-[450px] mt-5 p-8 border border-gray-50 rounded-lg ">
+      <div className="bg-gray-950 w-112.5 mt-5 p-8 border border-gray-50 rounded-lg ">
         <div className="flex items-center gap-x-2">
           <div className="w-20 bg-gray-700 border border-gray-300 rounded-lg">
             <img src={logo} alt="" className="w-full" />
@@ -178,7 +178,7 @@ const RegisterForm = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Enter your phone"
-              className="bg-gray-800 w-[390px] mt-2 rounded-lg px-9 py-2  text-white placeholder:text-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-gray-800 w-97.5 mt-2 rounded-lg px-9 py-2  text-white placeholder:text-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <p className="text-sm text-red-400">
@@ -197,11 +197,11 @@ const RegisterForm = () => {
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className="bg-gray-800 w-[390px] mt-2 rounded-lg px-9 py-2  text-white placeholder:text-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-gray-800 w-97.5 mt-2 rounded-lg px-9 py-2  text-white placeholder:text-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <span
               onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute bottom-2 left-[348px] cursor-pointer"
+              className="absolute bottom-2 left-87 cursor-pointer"
             >
               {" "}
               {showPassword ? (
@@ -227,11 +227,11 @@ const RegisterForm = () => {
               value={formik.values.confirm}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className="bg-gray-800 w-[390px] mt-2 rounded-lg px-9 py-2  text-white placeholder:text-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-gray-800 w-97.5 mt-2 rounded-lg px-9 py-2  text-white placeholder:text-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <span
               onClick={() => setShowCofirm((prev) => !prev)}
-              className="absolute bottom-2 left-[348px] cursor-pointer"
+              className="absolute bottom-2 left-87 cursor-pointer"
             >
               {" "}
               {showCofirm ? (
@@ -260,7 +260,7 @@ const RegisterForm = () => {
                 }
               }}
               onBlur={formik.handleBlur}
-              className="bg-gray-800 w-[390px] mt-2 rounded-lg px-9 py-2  text-white placeholder:text-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-gray-800 w-97.5 mt-2 rounded-lg px-9 py-2  text-white placeholder:text-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <label htmlFor="" className="text-md font-bold">
@@ -276,7 +276,7 @@ const RegisterForm = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               id=""
-              className="bg-gray-800 w-[390px] mt-2 rounded-lg px-9 py-2  text-white placeholder:text-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-gray-800 w-97.5 mt-2 rounded-lg px-9 py-2  text-white placeholder:text-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option disabled={true}>Choose role</option>
               <option value="ADMIN">ADMIN</option>
@@ -288,7 +288,7 @@ const RegisterForm = () => {
           </p>
           <button
             disabled={createState?.loading || !formik.isValid}
-            className="btn btn-info text-2xl cursor-pointer w-[390px] font-black text-blue-700 uppercase tracking-wider mt-4"
+            className="btn btn-info text-2xl cursor-pointer w-97.5 font-black text-blue-700 uppercase tracking-wider mt-4"
           >
             <BiRegistered /> {createState.loading ? "Signing" : "Signup"}
           </button>

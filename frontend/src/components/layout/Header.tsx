@@ -52,7 +52,7 @@ const Header = ({ onClose }: HeaderProps) => {
           </div>
 
           <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white font-bold">
-            {initials || "U"}
+            {initials || user.image}
           </div>
         </div>
       </div>
