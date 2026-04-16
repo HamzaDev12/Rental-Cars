@@ -112,7 +112,6 @@ const Cars = () => {
           ))}
         </div>
 
-        {/* Pagination */}
         <div className="flex justify-center mt-10">
           <div className="join">
             {page > 1 && (

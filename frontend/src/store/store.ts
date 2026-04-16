@@ -17,6 +17,8 @@ import { deleteBooking } from "./bookings/deleteBooking";
 import { forgetPassword } from "./auth/forgetPassword";
 import { changePassword } from "./auth/changePassword";
 import { updateUser } from "./auth/updateUser";
+import { changeEmail } from "./auth/changeEmail";
+import { verifyEmailChange } from "./auth/verifyEmailChange";
 
 export const store = configureStore({
   reducer: {
@@ -45,6 +47,8 @@ export const store = configureStore({
     forgetPassword: forgetPassword.reducer,
     changePassword: changePassword.reducer,
     updateUser: updateUser.reducer,
+    changeEmail: changeEmail.reducer,
+    verifyEmail: verifyEmailChange.reducer,
   },
   devTools: true,
 });

@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { BiLock } from "react-icons/bi";
+import { BiIdCard, BiLock } from "react-icons/bi";
 import { ImImage, ImProfile } from "react-icons/im";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store";
@@ -9,6 +9,8 @@ import { MdChangeCircle, MdEmail } from "react-icons/md";
 import { FaUserInjured } from "react-icons/fa";
 import { changePasswordFn } from "../../store/auth/changePassword";
 import type { IChangePasswordPayload } from "../../types/user.types";
+import { changeEmailFn } from "../../store/auth/changeEmail";
+import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
   const settingState = useSelector((state: RootState) => state.updateUser);
@@ -16,9 +18,11 @@ const Settings = () => {
   const changePassword = useSelector(
     (state: RootState) => state.changePassword,
   );
+  const changeEmailState = useSelector((state: RootState) => state.changeEmail);
+
   const dispatch = useDispatch<AppDispatch>();
   const toastId = "loading....";
-
+  const navigate = useNavigate();
   const userId = loginState?.data?.user?.id;
 
   const [name, setName] = useState("");
@@ -52,6 +56,18 @@ const Settings = () => {
     dispatch(changePasswordFn({ data, id }));
   };
 
+  const handleChangeEmail = (e: FormEvent) => {
+    e.preventDefault();
+
+    dispatch(changeEmailFn({ email, id }));
+  };
+
+  useEffect(() => {
+    if (changeEmailState?.data?.message) {
+      navigate("/dashboard/otp", { state: { email } });
+    }
+  }, [navigate, changeEmailState, email]);
+
   useEffect(() => {
     setId(userId);
   }, [userId]);
@@ -74,6 +90,15 @@ const Settings = () => {
     }
   }, [changePassword]);
 
+  useEffect(() => {
+    if (changeEmailState.error) {
+      toast.error(changeEmailState?.error, { id: toastId });
+    }
+    if (changeEmailState.data.message) {
+      toast.success(changeEmailState?.data?.message, { id: toastId });
+    }
+  }, [changeEmailState]);
+
   return (
     <div>
       <input type="checkbox" id="my_modal_6" className="modal-toggle" />
@@ -83,7 +108,23 @@ const Settings = () => {
             <MdChangeCircle /> Change Email
           </h3>
 
-          <form action="">
+          <form action="" onSubmit={handleChangeEmail}>
+            <label htmlFor="" className="text-md font-bold">
+              UserID <span className="text-red-300">*</span>
+            </label>
+
+            <div className="relative pt-4">
+              <BiIdCard className="text-gray-300 font-bold text-2xl  absolute top-6 left-2" />
+
+              <input
+                type="number"
+                name="id"
+                value={id || ""}
+                onChange={(e) => setId(Number(e.target.value))}
+                placeholder="Enter Your Email"
+                className="bg-gray-800 placeholder:text-gray-400 w-full text-white border border-gray-300 rounded-lg px-9 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
             <label htmlFor="" className="text-md font-bold">
               Email <span className="text-red-300">*</span>
             </label>

@@ -51,7 +51,7 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
   ];
 
   useEffect(() => {
-    if (!whoami.data.user) {
+    if (!whoami.data.token) {
       navigate("/");
     }
   }, [navigate, whoami]);
@@ -99,21 +99,37 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
         })}
       </nav>
       <div className="absolute bottom-0 w-full p-4 border-t border-gray-700">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1">
           <div className="dropdown dropdown-top">
             <div tabIndex={0} role="button" className="btn m-1 bg-transparent">
               <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white font-bold">
-                {initials || "U"}
+                {user.image ? (
+                  <img
+                    src={`http://localhost:3000/uploads/${user.image}`}
+                    className="w-10 h-10 rounded-full border border-blue-400"
+                  />
+                ) : (
+                  initials || "U"
+                )}
               </div>
             </div>
             <ul
               tabIndex={-1}
-              className="dropdown-content menu bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm"
+              className="dropdown-content menu bg-base-100 rounded-box z-10 w-56 p-2 shadow-sm"
             >
               <div className="flex items-center">
                 <li>
-                  <div className="w-10 h-10 flex items-center justify-center rounded-full lbg-blue-600 text-white font-bold bg-blue-600">
-                    {initials || "U"}
+                  <div className=" flex items-center ">
+                    {user.image ? (
+                      <img
+                        src={`http://localhost:3000/uploads/${user.image}`}
+                        className="w-10 h-10 rounded-full border border-blue-400"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full  text-white font-bold bg-blue-600">
+                        initials
+                      </div>
+                    )}{" "}
                   </div>
                 </li>
                 <li>
@@ -133,17 +149,18 @@ const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
                 </Link>
               </li>
               <li>
-                <button
+                <Link
+                  to="/"
                   onClick={handleLogout}
                   className="btn btn-soft btn-info flex items-center gap-2"
                 >
                   <IoLogOutOutline />
                   Logout
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
-          <div className="hidden sm:block text-left">
+          <div className=" text-left">
             <p className="text-white text-sm">{user?.name || "User"}</p>
             <p className="text-gray-400 text-xs">{user?.email}</p>
           </div>

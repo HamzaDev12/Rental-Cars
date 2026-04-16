@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { baseURL, somError } from "../../constants/message";
-import type { IVerifyPayload, IVerifyResponse } from "../../types/user.types";
+import type { IVerifyResponse } from "../../types/user.types";
 
 const initialState = {
   data: {} as IVerifyResponse,
@@ -10,10 +10,14 @@ const initialState = {
 };
 
 export const verificationCodeFn = createAsyncThunk(
-  "verification/code",
-  async (data: IVerifyPayload, { rejectWithValue }) => {
+  "verify/code",
+  async (
+    { code, email }: { code: string; email: string },
+    { rejectWithValue },
+  ) => {
     try {
-      const res = await axios.patch(`${baseURL}/users/verify`, data);
+      const res = await axios.patch(`${baseURL}/users/verify`, { code, email });
+
       return res.data;
     } catch (error) {
       if (error instanceof AxiosError) {

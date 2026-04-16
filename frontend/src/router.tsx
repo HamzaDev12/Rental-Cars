@@ -79,6 +79,10 @@ export const route = createBrowserRouter([
         path: "settings",
         element: <Settings />,
       },
+      {
+        path: "otp",
+        element: <Otp />,
+      },
     ],
   },
 ]);

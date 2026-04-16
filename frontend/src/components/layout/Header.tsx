@@ -52,7 +52,14 @@ const Header = ({ onClose }: HeaderProps) => {
           </div>
 
           <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white font-bold">
-            {initials || user.image}
+            {user.image ? (
+              <img
+                src={`http://localhost:3000/uploads/${user.image}`}
+                className="w-10 h-1- rounded-full border border-blue-400"
+              />
+            ) : (
+              initials
+            )}
           </div>
         </div>
       </div>

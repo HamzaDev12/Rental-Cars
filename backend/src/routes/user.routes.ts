@@ -47,7 +47,7 @@ route.patch(
   updatePassword,
 );
 
-route.patch("/changeEmail", authentication, requestChangeEmail);
+route.patch("/changeEmail/:id", authentication, requestChangeEmail);
 
 route.patch("/verifyEmailChange", authentication, confirmChangeEmail);
 

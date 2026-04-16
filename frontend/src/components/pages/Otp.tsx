@@ -5,17 +5,16 @@ import toast from "react-hot-toast";
 import { verificationCodeFn } from "../../store/auth/verification";
 import { sendOTPCodeFn } from "../../store/auth/re-sendOtp";
 import { useNavigate } from "react-router-dom";
-// import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Spinner from "../Spinner";
 
 const Otp: React.FC = () => {
-  const verifyState = useSelector((state: RootState) => state.verifyCode);
+  const verifyState = useSelector((state: RootState) => state.verifyEmail);
   const sendOtpState = useSelector((state: RootState) => state.sendCode);
-  const createState = useSelector((state: RootState) => state.createUser);
+  // const createState = useSelector((state: RootState) => state.createUser);
 
-  const email = createState?.data?.data?.email;
-  // const location = useLocation();
-  // const email = location.state?.email;
+  const location = useLocation();
+  const email = location.state?.email;
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -29,6 +28,9 @@ const Otp: React.FC = () => {
 
   const formattedTime = `${minutes}:${seconds.toString().padStart(2, "0")}`;
 
+  if (!email) {
+    toast.error("Email missing. Please try again.", { id: toastId });
+  }
   const handleVerification = (e: FormEvent) => {
     e.preventDefault();
     const code = otp.join("");
@@ -74,7 +76,7 @@ const Otp: React.FC = () => {
   if (verifyState.loading) return <Spinner />;
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-900 px-4">
+    <div className="min-h-screen w-full flex items-center justify-center bg-transparent px-4">
       <div className="w-110  bg-gray-950 border border-gray-300 rounded-2xl p-8 shadow-xl">
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-semibold text-white">

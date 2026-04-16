@@ -309,13 +309,18 @@ export const updatePassword = async (req: AuthRequest, res: Response) => {
 export const requestChangeEmail = async (req: AuthRequest, res: Response) => {
   try {
     const { email } = req.body;
+    const { id } = req.params;
+    if (!id || isNaN(Number(id))) {
+      shortRes(res, 400, "invalid user id");
+      return;
+    }
 
     if (!email) {
       return shortRes(res, 400, "Enter new email");
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: req.userId! },
+      where: { id: Number(id) },
     });
 
     if (!user) {
